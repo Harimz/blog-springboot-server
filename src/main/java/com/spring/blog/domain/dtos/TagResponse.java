@@ -1,23 +1,19 @@
 package com.spring.blog.domain.dtos;
 
-import com.spring.blog.domain.UserRole;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.time.LocalDateTime;
 import java.util.UUID;
 
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class UserResponse {
+public class TagResponse {
 
     private UUID id;
-    private String email;
     private String name;
-    private LocalDateTime createdAt;
-    private UserRole role;
+    private Integer postCount;
 }

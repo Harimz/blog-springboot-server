@@ -1,11 +1,11 @@
 package com.spring.blog.controllers.exceptions;
 
-
-import com.spring.blog.controllers.CategoryController;
+import com.spring.blog.controllers.AuthController;
+import com.spring.blog.controllers.TagController;
 import com.spring.blog.domain.dtos.ApiErrorResponse;
-import com.spring.blog.domain.exceptions.categories.CategoryAlreadyExistsException;
-import com.spring.blog.domain.exceptions.categories.CategoryInUseException;
-import com.spring.blog.domain.exceptions.categories.CategoryNotFoundException;
+import com.spring.blog.domain.exceptions.tags.TagInUseException;
+import com.spring.blog.domain.exceptions.tags.TagNotFoundException;
+import com.spring.blog.domain.exceptions.tags.TagsNotFoundException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.core.Ordered;
 import org.springframework.core.annotation.Order;
@@ -14,12 +14,13 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
-@RestControllerAdvice(basePackageClasses = CategoryController.class)
+@RestControllerAdvice(basePackageClasses = TagController.class)
 @Order(Ordered.HIGHEST_PRECEDENCE)
 @Slf4j
-public class CategoryExceptionHandler {
-    @ExceptionHandler(CategoryNotFoundException.class)
-    public ResponseEntity<ApiErrorResponse> handleCategoryNotFoundException(CategoryNotFoundException e) {
+public class TagExceptionHandler {
+
+    @ExceptionHandler(TagNotFoundException.class)
+    public ResponseEntity<ApiErrorResponse> handleTagNotFoundException(TagNotFoundException e) {
         ApiErrorResponse error = ApiErrorResponse.builder()
                 .status(HttpStatus.NOT_FOUND.value())
                 .message(e.getMessage())
@@ -28,18 +29,18 @@ public class CategoryExceptionHandler {
         return new ResponseEntity<>(error, HttpStatus.NOT_FOUND);
     }
 
-    @ExceptionHandler(CategoryInUseException.class)
-    public ResponseEntity<ApiErrorResponse> handleCategoryInUseException(CategoryInUseException e) {
+    @ExceptionHandler(TagsNotFoundException.class)
+    public ResponseEntity<ApiErrorResponse> handleTagsNotFoundException(TagsNotFoundException e) {
         ApiErrorResponse error = ApiErrorResponse.builder()
-                .status(HttpStatus.CONFLICT.value())
+                .status(HttpStatus.NOT_FOUND.value())
                 .message(e.getMessage())
                 .build();
 
-        return new ResponseEntity<>(error, HttpStatus.CONFLICT);
+        return new ResponseEntity<>(error, HttpStatus.NOT_FOUND);
     }
 
-    @ExceptionHandler(CategoryAlreadyExistsException.class)
-    public ResponseEntity<ApiErrorResponse> handleCategoryAlreadyExistsException(CategoryAlreadyExistsException e) {
+    @ExceptionHandler(TagInUseException.class)
+    public ResponseEntity<ApiErrorResponse> handleTagInUseException(TagInUseException e) {
         ApiErrorResponse error = ApiErrorResponse.builder()
                 .status(HttpStatus.CONFLICT.value())
                 .message(e.getMessage())

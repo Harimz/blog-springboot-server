@@ -61,6 +61,7 @@ public class AuthController {
                 .email(user.getEmail())
                 .name(user.getEmail())
                 .createdAt(user.getCreatedAt())
+                .role(user.getRole())
                 .build();
 
         return new ResponseEntity<>(response, HttpStatus.OK);

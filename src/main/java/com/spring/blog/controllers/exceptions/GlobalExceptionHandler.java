@@ -2,15 +2,21 @@ package com.spring.blog.controllers.exceptions;
 
 import com.spring.blog.domain.dtos.ApiErrorResponse;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.core.Ordered;
+import org.springframework.core.annotation.Order;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.BadCredentialsException;
+import org.springframework.security.authorization.AuthorizationDeniedException;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
+import java.nio.file.AccessDeniedException;
+
 @RestControllerAdvice
+@Order(Ordered.LOWEST_PRECEDENCE)
 @Slf4j
 public class GlobalExceptionHandler {
 
@@ -63,8 +69,8 @@ public class GlobalExceptionHandler {
         return new ResponseEntity<>(error, HttpStatus.CONFLICT);
     }
 
-    @ExceptionHandler(BadCredentialsException.class)
-    public ResponseEntity<ApiErrorResponse> handleBadCredentialsException(BadCredentialsException e) {
+    @ExceptionHandler({ BadCredentialsException.class, UsernameNotFoundException.class })
+    public ResponseEntity<ApiErrorResponse> handleAuthExceptions(RuntimeException e) {
         ApiErrorResponse error = ApiErrorResponse.builder()
                 .status(HttpStatus.UNAUTHORIZED.value())
                 .message("Invalid email or password")
@@ -73,13 +79,13 @@ public class GlobalExceptionHandler {
         return new ResponseEntity<>(error, HttpStatus.UNAUTHORIZED);
     }
 
-    @ExceptionHandler(UsernameNotFoundException.class)
-    public ResponseEntity<ApiErrorResponse> handleUsernameNotFoundException(UsernameNotFoundException e) {
-        ApiErrorResponse error = ApiErrorResponse.builder()
-                .status(HttpStatus.UNAUTHORIZED.value())
-                .message("Invalid email or password")
+    @ExceptionHandler({ AuthorizationDeniedException.class, AccessDeniedException.class })
+    public ResponseEntity<ApiErrorResponse> handleAccessDeniedExceptions(Exception e) {
+        ApiErrorResponse apiErrorResponse = ApiErrorResponse.builder()
+                .status(HttpStatus.FORBIDDEN.value())
+                .message("Access denied")
                 .build();
 
-        return new ResponseEntity<>(error, HttpStatus.UNAUTHORIZED);
+        return new ResponseEntity<>(apiErrorResponse, HttpStatus.FORBIDDEN);
     }
 }

@@ -1,5 +1,6 @@
 package com.spring.blog.domain.entities;
 
+import com.spring.blog.domain.UserRole;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -37,6 +38,10 @@ public class User {
     @Column(nullable = false)
     private LocalDateTime createdAt;
 
+    @Enumerated(EnumType.STRING)
+    @Column(nullable = false)
+    private UserRole role;
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -53,5 +58,9 @@ public class User {
     @PrePersist
     protected void onCreate() {
         this.createdAt = LocalDateTime.now();
+
+        if (this.role == null) {
+            this.role = UserRole.USER;
+        }
     }
 }

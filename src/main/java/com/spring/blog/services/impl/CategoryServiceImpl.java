@@ -59,4 +59,9 @@ public class CategoryServiceImpl implements CategoryService {
 
         return categoryRepository.save(existing);
     }
+
+    @Override
+    public Category getCategoryById(UUID id) {
+        return categoryRepository.findById(id).orElseThrow(() -> new CategoryNotFoundException(id));
+    }
 }
