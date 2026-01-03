@@ -71,7 +71,7 @@ public class SecurityConfig {
         config.setAllowedOrigins(List.of(
                 "http://localhost:3000",
                 "https://logbook-blog.netlify.app",
-                "https://logbook-blog.online/"
+                "https://logbook-blog.online"
         ));
 
         config.setAllowedMethods(List.of("GET","POST","PUT","PATCH","DELETE","OPTIONS"));
