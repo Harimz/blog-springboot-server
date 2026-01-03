@@ -19,6 +19,8 @@ public class UpdatePostRequest {
 
     private String title;
 
+    private String coverImageUrl;
+
     private String content;
 
     private UUID categoryId;

@@ -26,6 +26,9 @@ public class Post {
     @Column(nullable = false)
     private String title;
 
+    @Column(name = "cover_image_url")
+    private String coverImageUrl;
+
     @Column(nullable = false, columnDefinition = "TEXT")
     private String content;
 

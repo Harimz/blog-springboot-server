@@ -4,6 +4,7 @@ import com.spring.blog.domain.CreatePostRequest;
 import com.spring.blog.domain.UpdatePostRequest;
 import com.spring.blog.domain.dtos.CreatePostRequestDto;
 import com.spring.blog.domain.dtos.PostDto;
+import com.spring.blog.domain.dtos.PostPreviewDto;
 import com.spring.blog.domain.dtos.UpdatePostRequestDto;
 import com.spring.blog.domain.entities.Post;
 import com.spring.blog.domain.entities.User;
@@ -13,6 +14,10 @@ import com.spring.blog.services.PostService;
 import com.spring.blog.services.UserService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -32,14 +37,16 @@ public class PostController {
     private final UserService userService;
 
     @GetMapping
-    public ResponseEntity<List<PostDto>> getAllPosts(
+    public ResponseEntity<Page<PostPreviewDto>> getAllPosts(
             @RequestParam(required = false) UUID categoryId,
-            @RequestParam(required = false) UUID tagId
+            @RequestParam(required = false) UUID tagId,
+            @PageableDefault(size = 12, sort = "createdAt", direction = Sort.Direction.DESC) Pageable pageable
     ) {
-        List<Post> posts = postService.getAllPosts(categoryId, tagId);
-        List<PostDto> postDtos = posts.stream().map(postMapper::toDto).toList();
+        Page<Post> posts = postService.getAllPosts(categoryId, tagId, pageable);
 
-        return ResponseEntity.ok(postDtos);
+        Page<PostPreviewDto> dtoPage = posts.map(postMapper::toPreviewDto);
+
+        return ResponseEntity.ok(dtoPage);
     }
 
     @GetMapping(path = "/drafts")

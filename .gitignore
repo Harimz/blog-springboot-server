@@ -36,3 +36,6 @@ build/
 .env.*
 
 /src/main/resources/application.yml
+application.properties
+!**/src/main/resources/application.properties
+src/main/resources/application.properties

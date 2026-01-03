@@ -13,6 +13,8 @@ import com.spring.blog.services.CategoryService;
 import com.spring.blog.services.PostService;
 import com.spring.blog.services.TagService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -34,28 +36,26 @@ public class PostServiceImpl implements PostService {
 
     @Override
     @Transactional(readOnly = true)
-    public List<Post> getAllPosts(UUID categoryId, UUID tagId) {
+    public Page<Post> getAllPosts(UUID categoryId, UUID tagId, Pageable pageable) {
         if (categoryId != null && tagId != null) {
-             Category category = categoryService.getCategoryById(categoryId);
-             Tag tag = tagService.getTagById(tagId);
-             return postRepository.findAllByStatusAndCategoryAndTagsContaining(
-                     PostStatus.PUBLISHED, category, tag
-             );
+            Category category = categoryService.getCategoryById(categoryId);
+            Tag tag = tagService.getTagById(tagId);
+            return postRepository.findAllByStatusAndCategoryAndTagsContaining(
+                    PostStatus.PUBLISHED, category, tag, pageable
+            );
         }
 
         if (categoryId != null) {
             Category category = categoryService.getCategoryById(categoryId);
-
-            return postRepository.findAllByStatusAndCategory(PostStatus.PUBLISHED, category);
+            return postRepository.findAllByStatusAndCategory(PostStatus.PUBLISHED, category, pageable);
         }
 
         if (tagId != null) {
             Tag tag = tagService.getTagById(tagId);
-
-            return postRepository.findAllByStatusAndTagsContaining(PostStatus.PUBLISHED, tag);
+            return postRepository.findAllByStatusAndTagsContaining(PostStatus.PUBLISHED, tag, pageable);
         }
 
-        return postRepository.findAllByStatus(PostStatus.PUBLISHED);
+        return postRepository.findAllByStatus(PostStatus.PUBLISHED, pageable);
     }
 
     @Override
@@ -68,6 +68,7 @@ public class PostServiceImpl implements PostService {
     public Post createPost(User user, CreatePostRequest createPostRequest) {
         Post newPost = new Post();
         newPost.setTitle(createPostRequest.getTitle());
+        newPost.setCoverImageUrl(createPostRequest.getCoverImageUrl());
         newPost.setContent(createPostRequest.getContent());
         newPost.setStatus(createPostRequest.getStatus());
         newPost.setAuthor(user);
@@ -98,6 +99,7 @@ public class PostServiceImpl implements PostService {
         Post existingPost = postRepository.findById(postId).orElseThrow(() -> new PostNotFoundException(postId));
 
         existingPost.setTitle(updatePostRequest.getTitle());
+        existingPost.setCoverImageUrl(updatePostRequest.getCoverImageUrl());
         existingPost.setContent(updatePostRequest.getContent());
         existingPost.setStatus(updatePostRequest.getStatus());
         existingPost.setReadingTime(calculateReadingTime(updatePostRequest.getContent()));

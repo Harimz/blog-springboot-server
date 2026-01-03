@@ -1,11 +1,11 @@
-package com.spring.blog.domain;
+package com.spring.blog.domain.dtos;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.util.HashSet;
+import java.time.LocalDateTime;
 import java.util.Set;
 import java.util.UUID;
 
@@ -13,18 +13,17 @@ import java.util.UUID;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class CreatePostRequest {
+public class PostPreviewDto {
+
+    private UUID postId;
 
     private String title;
 
     private String coverImageUrl;
 
-    private String content;
+    private LocalDateTime createdAt;
 
-    private UUID categoryId;
-
-    @Builder.Default
-    private Set<UUID> tagIds = new HashSet<>();
-
-    private PostStatus status;
+    private CategoryDto category;
+    private Set<TagResponse> tags;
+    private AuthorDto author;
 }
