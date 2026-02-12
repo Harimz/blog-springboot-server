@@ -1,7 +1,7 @@
 package com.spring.blog.config;
 
 import com.spring.blog.security.JwtAuthenticationFilter;
-import com.spring.blog.services.AuthenticationService;
+import com.spring.blog.auth.service.AuthenticationService;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;

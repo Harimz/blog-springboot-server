@@ -1,7 +1,6 @@
 package com.spring.blog.security;
 
-import com.spring.blog.repositories.PostRepository;
-import lombok.Builder;
+import com.spring.blog.posts.persistence.PostRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Component;

@@ -1,7 +1,7 @@
 package com.spring.blog.security;
 
-import com.spring.blog.domain.entities.User;
-import com.spring.blog.repositories.UserRepository;
+import com.spring.blog.auth.User;
+import com.spring.blog.auth.persistence.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;

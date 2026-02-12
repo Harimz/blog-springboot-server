@@ -1,6 +1,6 @@
 package com.spring.blog.security;
 
-import com.spring.blog.services.AuthenticationService;
+import com.spring.blog.auth.service.AuthenticationService;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;

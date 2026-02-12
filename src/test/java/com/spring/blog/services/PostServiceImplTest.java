@@ -1,15 +1,17 @@
 package com.spring.blog.services;
 
-import com.spring.blog.domain.CreatePostRequest;
-import com.spring.blog.domain.PostStatus;
-import com.spring.blog.domain.UpdatePostRequest;
-import com.spring.blog.domain.entities.Category;
-import com.spring.blog.domain.entities.Post;
-import com.spring.blog.domain.entities.Tag;
-import com.spring.blog.domain.entities.User;
-import com.spring.blog.domain.exceptions.posts.PostNotFoundException;
-import com.spring.blog.repositories.PostRepository;
-import com.spring.blog.services.impl.PostServiceImpl;
+import com.spring.blog.categories.service.CategoryService;
+import com.spring.blog.posts.dto.CreatePostRequest;
+import com.spring.blog.posts.domain.PostStatus;
+import com.spring.blog.categories.Category;
+import com.spring.blog.posts.Post;
+import com.spring.blog.tags.Tag;
+import com.spring.blog.auth.User;
+import com.spring.blog.posts.exception.PostNotFoundException;
+import com.spring.blog.posts.service.PostService;
+import com.spring.blog.posts.persistence.PostRepository;
+import com.spring.blog.posts.service.impl.PostServiceImpl;
+import com.spring.blog.tags.service.TagService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
